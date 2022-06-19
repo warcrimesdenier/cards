@@ -5,7 +5,7 @@ module.exports = {
 	TRUST_X_FORWARDED_FOR: true,
 	SOCKJS_PREFIX: '/sockjs',
 	SOCKJS_URL: 'https://localhost:' + process.env.PORT + '/sockjs',
-	SOCKJS_SCRIPT_URL: 'http://localhost:' + process.env.PORT + '/sockjs-1.1.1.min.js',//'https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js', 
+	SOCKJS_SCRIPT_URL: 'http://localhost:' + process.env.PORT + '/www/sockjs-1.1.1.min.js',//'https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js', 
 	GAME_ID: 1,
 	NAME_EXPIRY: 60 * 60 * 24 * 14,
 };
