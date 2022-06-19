@@ -7,12 +7,12 @@ var _ = require('underscore'),
     StateMachine = require('./state-machine').StateMachine,
     util = require('util');
 
-var HAND_SIZE = 8;
+var HAND_SIZE = 10;
 var MIN_PLAYERS = 3;
 var MAX_PLAYERS = 20;
 var ROUND_POINTS = 5;
 var MESSAGE_RATE = 7;
-var DEALER_TERM = "judge";
+var DEALER_TERM = "card czar";
 
 var TIMEOUTS = {
     nomination: 25,
