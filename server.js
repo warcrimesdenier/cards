@@ -8,12 +8,13 @@ var assets = require('./assets'),
     util = require('util');
     redis = require('redis');
 
-let redisClient
+function redisClient() {
 if(process.env.REDISCLOUD_URL){
     let redisURL = url.parse(process.env.REDISCLOUD_URL);
-    redisClient = redis.createClient(redisURL)
+    return redis.createClient(redisURL)
 } else {
-    redisClient = redis.createClient()
+    return redis.createClient()
+}
 }
 
 var SHARED_REDIS = redisClient();
