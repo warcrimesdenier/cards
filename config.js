@@ -1,7 +1,7 @@
 module.exports = {
 	DEBUG: false,
 	REDIS_PORT: 6379,
-	LISTEN_PORT: 8000,
+	LISTEN_PORT: 8080,
 	TRUST_X_FORWARDED_FOR: false,
 	SOCKJS_PREFIX: '/sockjs',
 	SOCKJS_URL: 'http://localhost:8000/sockjs',
