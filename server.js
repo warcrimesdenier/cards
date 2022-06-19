@@ -34,13 +34,13 @@ function startServer() {
         jsessionid: false,
         log: sockJsLog,
     });
-    
+    var url = config.URL;
     var port = config.LISTEN_PORT;
-    http.listen(port, function (err) {
-        if (err) throw err;
-        if (typeof port == 'string') require('fs').chmodSync(port, '775');
-        console.log('Listening on ' + port + '.');
-    });
+    http.listen(port, url); //function (err) {
+        //if (err) throw err;
+        //if (typeof port == 'string') require('fs').chmodSync(port, '775');
+        //console.log('Listening on ' + port + '.');
+    //});
 }
 
 function onConnection(conn) {
