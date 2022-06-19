@@ -35,12 +35,9 @@ function startServer() {
         log: sockJsLog,
     });
     
-    var port = config.LISTEN_PORT;
-    http.listen(port, function (err) {
-        if (err) throw err;
-        if (typeof port == 'string') require('fs').chmodSync(port, '775');
-        console.log('Listening on ' + port + '.');
-    });
+    http.listen(config.LISTEN_PORT);
+    console.log('Listening on port ' + config.LISTEN_PORT + '.');
+    
 }
 
 function onConnection(conn) {
