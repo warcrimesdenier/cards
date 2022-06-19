@@ -6,6 +6,7 @@ var assets = require('./assets'),
     events = require('events'),
     urlParse = require('url').parse,
     util = require('util');
+    redis = require('redis');
 
 let redisClient
 if(process.env.REDISCLOUD_URL){
