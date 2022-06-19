@@ -40,6 +40,8 @@ function startServer() {
     
 }
 
+    
+    
 function onConnection(conn) {
     var ip = conn.remoteAddress;
     if (config.TRUST_X_FORWARDED_FOR) {
@@ -51,6 +53,19 @@ function onConnection(conn) {
     conn.on('data', client.onMessage.bind(client));
     conn.once('close', client.onDisconnected.bind(client));
 }
+
+service.on('connection', function(conn){
+    console.log(" [.] open event received");
+    var t = setInterval(function(){
+        try{
+            conn._session.recv.didClose();
+        } catch (x) {}
+    }, 15000);
+    conn.on('close', function() {
+        console.log(" [.] close event received");
+        clearInterval(t);
+        t = null;
+    });
 
 function parseForwardedFor(ff) {
     if (!ff)
