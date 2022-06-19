@@ -37,7 +37,7 @@ function startServer() {
     var port = config.LISTEN_PORT;
     http.listen(port, function (err) {
         if (err) throw err;
-        if (typeof port == 'string') require('fs').chmodSync(port, '775');
+        //if (typeof port == 'string') require('fs').chmodSync(port, '775');
         console.log('Listening on ' + port + '.');
     });
 }
