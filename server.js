@@ -27,7 +27,19 @@ function startServer() {
     // Dumb workaround for sockjs-connect incompatibility
     var http = require('http').createServer(app);
     var sockJs = require('sockjs').createServer();
-    sockJs.on('connection', onConnection);
+    //sockJs.on('connection', onConnection);
+    sockJs.on('connection', function(conn){
+        console.log(" [.] open event received");
+        var t = setInterval(function(){
+            try{
+                conn._session.recv.didClose();
+            } catch (x) {}
+        }, 15000);
+        conn.on('close', function() {
+            console.log(" [.] close event received");
+            clearInterval(t);
+        });
+    });
     sockJs.installHandlers(http, {
         sockjs_url: config.SOCKJS_SCRIPT_URL,
         prefix: config.SOCKJS_URL,
@@ -370,18 +382,7 @@ var noCacheHeaders = {'Content-Type': 'text/html; charset=UTF-8',
                       Expires: 'Thu, 01 Jan 1970 00:00:00 GMT',
                       'Cache-Control': 'no-cache'};
 //heroku hack
-service.on('connection', function(conn){
-    console.log(" [.] open event received");
-    var t = setInterval(function(){
-        try{
-            conn._session.recv.didClose();
-        } catch (x) {}
-    }, 15000);
-    conn.on('close', function() {
-        console.log(" [.] close event received");
-        clearInterval(t);
-    });
-});
+
 
 if (require.main === module) {
     assets.buildScripts(function (err, scripts) {
