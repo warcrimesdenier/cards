@@ -43,22 +43,12 @@ function startServer() {
     
     
 function onConnection(conn) {
-    console.log(" [.] open event received");
     var ip = conn.remoteAddress;
     if (config.TRUST_X_FORWARDED_FOR) {
         var ff = parseForwardedFor(conn.headers['x-forwarded-for']);
         if (ff)
             ip = ff;
     }
-    var t = setInterval(function(){
-            try{
-                conn._session.recv.didClose();
-            } catch (x) {}
-        }, 15000);
-        conn.on('close', function() {
-            console.log(" [.] close event received");
-            clearInterval(t);
-        });
     var client = new Client(conn, ip);
     conn.on('data', client.onMessage.bind(client));
     conn.once('close', client.onDisconnected.bind(client));
