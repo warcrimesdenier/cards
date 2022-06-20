@@ -1,7 +1,7 @@
 body {
-	background-color: #999999;
-	color: #000000;
-	font-family: "MS Pゴシック", "MS Impact", "Mona", "Hiragino Kaku Gothic Pro";
+	background-color: #f5f5f5;
+	color: #222;
+	font-family: "MS Pゴシック", "MS PGothic", "Mona", "Hiragino Kaku Gothic Pro";
 	font-size: 10pt;
 }
 h1 {
@@ -9,7 +9,7 @@ h1 {
 }
 li {
 	position: relative;
-	background-color: #d9ead3;
+	background-color: white;
 	border: 1px solid #aaa;
 	border-radius: 5px;
 	display: block;
@@ -21,7 +21,7 @@ li {
 	min-height: 13em;
 }
 li.black {
-	background-color: #614d84;
+	background-color: black;
 	color: #f0f0f0;
 	margin-bottom: 1em;
 }
@@ -29,8 +29,8 @@ li.normal {
 	color: #aaa;
 }
 li.selected {
-	background-color: #7ae952;
-	color: black;
+	background-color: #55f;
+	color: white;
 	margin-top: -1em;
 	margin-bottom: 2em;
 }
@@ -130,7 +130,7 @@ ul {
 	background-size: 10px 10px;
 }
 #roster .spec {
-	color: #BBB;
+	color: #999;
 }
 #social {
 	clear: right;
