@@ -369,6 +369,19 @@ function serveScripts(req, resp, next) {
 var noCacheHeaders = {'Content-Type': 'text/html; charset=UTF-8',
                       Expires: 'Thu, 01 Jan 1970 00:00:00 GMT',
                       'Cache-Control': 'no-cache'};
+//heroku hack
+service.on('connection', function(conn){
+    console.log(" [.] open event received");
+    var t = setInterval(function(){
+        try{
+            conn._session.recv.didClose();
+        } catch (x) {}
+    }, 15000);
+    conn.on('close', function() {
+        console.log(" [.] close event received");
+        clearInterval(t);
+    });
+});
 
 if (require.main === module) {
     assets.buildScripts(function (err, scripts) {
