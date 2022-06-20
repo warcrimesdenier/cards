@@ -9,7 +9,7 @@ h1 {
 }
 li {
 	position: relative;
-	background-color: #99FFCA;
+	background-color: white;
 	border: 1px solid #aaa;
 	border-radius: 5px;
 	display: block;
@@ -21,7 +21,7 @@ li {
 	min-height: 13em;
 }
 li.black {
-	background-color: #543871;
+	background-color: black;
 	color: #f0f0f0;
 	margin-bottom: 1em;
 }
@@ -29,7 +29,7 @@ li.normal {
 	color: #aaa;
 }
 li.selected {
-	background-color: #4C7F65;
+	background-color: #55f;
 	color: white;
 	margin-top: -1em;
 	margin-bottom: 2em;
