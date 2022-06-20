@@ -15,10 +15,10 @@ var MESSAGE_RATE = 7;
 var DEALER_TERM = "card czar";
 
 var TIMEOUTS = {
-    nomination: 25,
-    election: 40,
+    nomination: 50,
+    election: 60,
     intermission: 20,
-    abandoned: 30, // clientless
+    abandoned: 60, // clientless
     afk: 10*60, // no actions
 };
 
