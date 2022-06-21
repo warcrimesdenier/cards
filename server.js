@@ -19,7 +19,6 @@ game.setRedis(SHARED_REDIS);
 
 function startServer() {                                                       
     var app = require('connect')();
-    app.use(favicon(__dirname + '/favicon.ico'));
     app.use(serveScripts);
     app.use(serveSuggestions);
     app.use(require('serve-static')(__dirname + '/www', {maxAge: 2592000000}));
