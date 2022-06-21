@@ -29,11 +29,11 @@ li.black {
 	margin-bottom: 1em;
 }
 li.normal {
-	color: #888;
+	color: #777;
 }
 li.selected {
-	background-color: #55f;
-	color: white;
+	background-color: #f5985f;
+	color: black;
 	margin-top: -1em;
 	margin-bottom: 2em;
 }
@@ -44,7 +44,7 @@ li.selecting {
 	margin-bottom: 1.5em;
 }
 .unlocked li.normal {
-	color: #555;
+	color: #222;
 	cursor: pointer;
 }
 .unlocked li.normal:hover {
@@ -134,7 +134,7 @@ ul {
 	background-size: 10px 10px;
 }
 #roster .spec {
-	color: #999;
+	color: #777;
 }
 #social {
 	clear: right;
@@ -142,6 +142,7 @@ ul {
 }
 #status {
 	clear: both;
+	font-size: 14;
 	font-weight: bold;
 	text-align: left;
 	padding: 0.5em 0.5em 0 0.5em;
@@ -171,7 +172,7 @@ ul {
 	color: #f5985f;
 }
 #submissions.electing a {
-	background-color: white;
+	background-color: #444;
 	border-color: #f5985f;
 	cursor: pointer;
 }
