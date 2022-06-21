@@ -309,7 +309,7 @@ var PersonView = Backbone.View.extend({
 		else
 			$em.stop().css({opacity: 0}).animate({opacity: 1}, 'fast');
 		$em.text(' (' + this.model.get('score') + ')');
-		$em.css({color: '#ff5555'}).delay(1000).animate({color: '#5555ff'});
+		$em.css({color: '#ff5555'}).delay(1000).animate({color: '#f5985f'});
 	},
 });
 
@@ -623,11 +623,11 @@ function blinkTitle() {
 
 function suggestionBox() {
 	var $link = $('<a>', {
-		href: 'https://github.com/lalcmellkmal/cam/tree/master/sets',
+		href: 'https://github.com/lalcmellkmal/cam/tree/master',
 		rel: 'nofollow',
 		target: '_blank',
-		text: 'Suggestions',
-		title: 'Send a pull request!',
+		text: 'Original App',
+		title: 'being meguka is suffering',
 	});
 	var $box = $('<div id="suggestions"/>').append($link);
 	return $box;

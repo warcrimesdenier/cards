@@ -39,6 +39,7 @@ li.selected {
 }
 li.selecting {
 	border-color: white;
+	background-color: #CCCCCC;
 	color: black;
 	margin-top: -0.5em;
 	margin-bottom: 1.5em;
@@ -83,7 +84,7 @@ ul {
 	float: right;
 }
 #chat {
-	background-color: #BBB;
+	background-color: #CCC;
 	color: black;
 	border: 1px solid #DDD;
 	border-radius: 3px;
