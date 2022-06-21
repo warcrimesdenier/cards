@@ -83,7 +83,8 @@ ul {
 	float: right;
 }
 #chat {
-	background-color: #AAA;
+	background-color: #BBB;
+	color: black;
 	border: 1px solid #DDD;
 	border-radius: 3px;
 	float: left;
