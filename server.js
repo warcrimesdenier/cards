@@ -7,6 +7,8 @@ var assets = require('./assets'),
     urlParse = require('url').parse,
     util = require('util');
     redis = require('redis');
+    favicon = require('serve-favicon');
+
 
 function redisClient() {
     return require('redis').createClient(config.REDIS_PORT);
@@ -369,8 +371,8 @@ function serveScripts(req, resp, next) {
 var noCacheHeaders = {'Content-Type': 'text/html; charset=UTF-8',
                       Expires: 'Thu, 01 Jan 1970 00:00:00 GMT',
                       'Cache-Control': 'no-cache'};
-//heroku hack
 
+app.use(favicon(__dirname + '/favicon.ico'));
 
 if (require.main === module) {
     assets.buildScripts(function (err, scripts) {
