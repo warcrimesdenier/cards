@@ -19,6 +19,7 @@ game.setRedis(SHARED_REDIS);
 
 function startServer() {                                                       
     var app = require('connect')();
+    app.use(favicon(__dirname + '/favicon.ico'));
     app.use(serveScripts);
     app.use(serveSuggestions);
     app.use(require('serve-static')(__dirname + '/www', {maxAge: 2592000000}));
@@ -371,8 +372,6 @@ function serveScripts(req, resp, next) {
 var noCacheHeaders = {'Content-Type': 'text/html; charset=UTF-8',
                       Expires: 'Thu, 01 Jan 1970 00:00:00 GMT',
                       'Cache-Control': 'no-cache'};
-
-app.use(favicon(__dirname + '/favicon.ico'));
 
 if (require.main === module) {
     assets.buildScripts(function (err, scripts) {
