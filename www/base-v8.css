@@ -84,6 +84,11 @@ ul {
 	float: right;
 }
 
+#foot {
+	font-weight: bold;
+	text-align: center;
+}
+
 #join {
 	background: url('joingame.png') no-repeat;
 	cursor: pointer;
