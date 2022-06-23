@@ -83,6 +83,15 @@ ul {
 #account > input {
 	float: right;
 }
+
+#join {
+	background: url('joingame.png') no-repeat;
+	cursor: pointer;
+	width: 200px;
+	height: 40px;
+	border: none;
+}
+
 #chat {
 	background-color: #CCC;
 	color: black;
