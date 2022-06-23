@@ -224,12 +224,12 @@ var AccountView = Backbone.View.extend({
 
 	initialize: function () {
 		this.model.on('change', this.render, this);
-		var $join = $('<input type=button id=join value="">').hide();
-		var $leave = $('<input type=button id=leave value="Leave game">').hide();
-		var $gameFull = $('<input type=button id=gameFull value="Game full." disabled>').hide();
-		var $alreadyConnected = $('<input type=button id=alreadyConnected value="Already connected." disabled>').hide();
+		var $join = $('<button type=button id=join></button>').hide();
+		var $leave = $('<button type=button id=leave></button>').hide();
+		var $gameFull = $('<button type=button id=gameFull disabled></button>').hide();
+		var $alreadyConnected = $('<button type=button id=alreadyConnected disabled></button>').hide();
 		//this.$el.append('<form><input id=username maxlength='+USERNAME_LENGTH+'> <input type=submit value="Set name"></form>', $join, $leave, $gameFull, $alreadyConnected);
-		this.$el.append('<input type=button id=enterNewName value="">', $join, $leave, $gameFull, $alreadyConnected);
+		this.$el.append('<button type=button id=enterNewName></button>', $join, $leave, $gameFull, $alreadyConnected);
 	},
 
 	render: function () {
