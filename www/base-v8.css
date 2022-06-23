@@ -92,6 +92,23 @@ ul {
 	border: none;
 }
 
+#leave {
+	background: url('leavegame.png') no-repeat;
+	cursor: pointer;
+	width: 200px;
+	height: 40px;
+	border: none;
+}
+
+#enterNewName {
+	background: url('setname.png') no-repeat;
+	cursor: pointer;
+	width: 200px;
+	height: 40px;
+	border: none;
+}
+
+
 #chat {
 	background-color: #CCC;
 	color: black;
