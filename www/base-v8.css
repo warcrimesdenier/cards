@@ -108,6 +108,21 @@ ul {
 	border: none;
 }
 
+#gameFull {
+	background: url('gamefull.png') no-repeat;
+	cursor: pointer;
+	width: 200px;
+	height: 40px;
+	border: none;
+}
+
+#alreadyConnected {
+	background: url('alreadyconnected.png') no-repeat;
+	cursor: pointer;
+	width: 200px;
+	height: 40px;
+	border: none;
+}
 
 #chat {
 	background-color: #CCC;
