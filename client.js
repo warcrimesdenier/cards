@@ -224,7 +224,7 @@ var AccountView = Backbone.View.extend({
 
 	initialize: function () {
 		this.model.on('change', this.render, this);
-		var $join = $('<input type=button id=join value="Join game">').hide();
+		var $join = $('<input type=image src="www/joingame.png" id=join alt="Join game" width="100" height="20">').hide();
 		var $leave = $('<input type=button id=leave value="Leave game">').hide();
 		var $gameFull = $('<input type=button id=gameFull value="Game full." disabled>').hide();
 		var $alreadyConnected = $('<input type=button id=alreadyConnected value="Already connected." disabled>').hide();
