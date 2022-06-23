@@ -217,7 +217,7 @@ var AccountView = Backbone.View.extend({
 	id: 'account',
 
 	events: {
-		'click #enterNewName': 'enterName',
+		'click #name': 'changeName',
 		'click #join': 'joinGame',
 		'click #leave': 'leaveGame',
 	},
@@ -229,7 +229,7 @@ var AccountView = Backbone.View.extend({
 		var $gameFull = $('<button type=button id=gameFull disabled></button>').hide();
 		var $alreadyConnected = $('<button type=button id=alreadyConnected disabled></button>').hide();
 		//this.$el.append('<form><input id=username maxlength='+USERNAME_LENGTH+'> <input type=submit value="Set name"></form>', $join, $leave, $gameFull, $alreadyConnected);
-		this.$el.append('<button type=button id=enterNewName></button>', $join, $leave, $gameFull, $alreadyConnected);
+		this.$el.append('<button type=button id=name></button>', $join, $leave, $gameFull, $alreadyConnected);
 	},
 
 	render: function () {
@@ -250,13 +250,13 @@ var AccountView = Backbone.View.extend({
 		return this;
 	},
 
-	enterName: function () {
-		var name = prompt("Enter a username.\n(don't worry too much about it, you can change it whenever you want)", "Anonymous")
+	changeName: function () {
+		var name = prompt("Enter a username.\n(don't worry too much about it, you can change it whenever you want)", "Anonymous");
 		event.preventDefault();
 		//var name = this.$('#username').val().trim();
 		if (name != null || name != '')
 			send('setName', {name: name});
-	}
+	},
 
 	joinGame: function () {
 		send('join', {});
@@ -270,12 +270,12 @@ var AccountView = Backbone.View.extend({
 		this.model.set({action: null});
 	},
 
-	changeName: function (event) {
-		event.preventDefault();
-		var name = this.$('#username').val().trim();
-		if (name)
-			send('setName', {name: name});
-	},
+	// changeName: function (event) {
+	// 	event.preventDefault();
+	// 	var name = this.$('#username').val().trim();
+	// 	if (name)
+	// 		send('setName', {name: name});
+	// },
 });
 
 var Person = Backbone.Model.extend({

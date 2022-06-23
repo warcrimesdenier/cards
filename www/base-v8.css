@@ -100,7 +100,7 @@ ul {
 	border: none;
 }
 
-#enterNewName {
+#name {
 	background: url('setname.png') no-repeat;
 	cursor: pointer;
 	width: 200px;
