@@ -254,8 +254,9 @@ var AccountView = Backbone.View.extend({
 		var name = prompt("Enter a username.\n(don't worry too much about it, you can change it whenever you want)", "Anonymous");
 		event.preventDefault();
 		//var name = this.$('#username').val().trim();
-		if (name != null || name != '')
+		if (name != null || name != ''){
 			send('setName', {name: name});
+		}else{return}
 	},
 
 	joinGame: function () {
