@@ -13,7 +13,7 @@ var MAX_PLAYERS = 12;
 var ROUND_POINTS = 10;
 var MESSAGE_RATE = 7;
 var DEALER_TERM = "card czar";
-var PACKS = ['base.txt', 'baseblack.txt']
+var PACKS = ['base.txt', 'baseblack.txt'];
 
 var TIMEOUTS = {
     nomination: 40,
@@ -88,29 +88,29 @@ G.addCards = function() {
     var key = this.key;
     var blacks = [];
     var whites = [];
-    for (var i = 0; i < PACKS.length; i--) {
-        if PACKS[i].includes('black') {
+    for (var i = 0; i < PACKS.length; i++) {
+        if (PACKS[i].includes('black')) {
             fs.readFile('sets/'+PACKS[i], 'UTF-8', function (err, file) {
-                if (err)
-                    return cb(err);
+                // if (err)
+                //    return cb(err);
                 file.split('\n').forEach(function (line) {
                     line = line.trim();
                     if (line && !/^#/.test(line))
                         blacks.push(line);
                 });
-                cb(null);
+                //cb(null);
             });
         }
         else {
             fs.readFile('sets/'+PACKS[i], 'UTF-8', function (err, file) {
-                if (err)
-                    return cb(err);
-                file.split('\n').forEach(function (line) {
-                    line = line.trim();
-                    if (line && !/^#/.test(line))
-                        blacks.push(line);
+                //if (err)
+                //    return cb(err);
+                file.split('\n').forEach(function (line2) {
+                    line2 = line2.trim();
+                    if (line2 && !/^#/.test(line2))
+                        whites.push(line2);
                 });
-                cb(null);
+                //cb(null);
             });
         }
     }
@@ -775,18 +775,18 @@ G.chat = function (client, msg) {
     if (!msg.text || typeof msg.text != 'string')
         return this.warn("Bad message.");
 
-    if msg.txt.slice(0,1) == '/' {
+    if (msg.txt.slice(0,1) == '/') {
         if (msg.txt == '/packs') {
             var notif = "all packs:\n";
             fs.readdir('sets', function (err, packs) {
                 packs.forEach(function(pack) {
-                    if !(/black/i.test(pack))
+                    if (!/black/i.test(pack))
                         notif = notif + ('"' + pack.replace('.txt', '') + '" ');
                 });
             });
             notif = notif + "\npacks in play:\n";
             for (let i = 0; i < PACKS.length; i++) {
-                if !(/black/i.test(PACKS[i]))
+                if (!/black/i.test(PACKS[i]))
                     notif += ('"' + PACKS[i].replace('.txt', '') + '" ');
             };
             notif += "\ntype /add <pack> or /remove <pack> to change the packs in play for the next round!"
@@ -795,28 +795,28 @@ G.chat = function (client, msg) {
 
         else { 
             var splitMsg = msg.txt.split(' ');
-            if splitMsg[0] == '/add' {
-                fs.readdir('sets' function(err, packs)) {
-                    if (err)
-                        return cb(err);
+            if (splitMsg[0] == '/add') {
+                fs.readdir('sets', function(err, packs) {
+                    // if (err)
+                    //     return cb(err);
                     packs.forEach(function(pack) {
-                        if pack.includes(splitMsg[1]) {
+                        if (pack.includes(splitMsg[1])) {
                              PACKS.push(pack);
                              this.sendAll('set', {status: pack + " will be added to the deck next round!" });
                          }
 
                     });
-                }
+                });
             }
-            else if splitMsg[0] == '/remove' {
+            else if (splitMsg[0] == '/remove') {
                 for (var i = 0; i < PACKS.length; i++) {
-                    if PACKS[i].includes(splitMsg[1]) {
+                    if (PACKS[i].includes(splitMsg[1])) {
                         PACKS.splice (i, 1)
                         this.sendAll('set', {status: pack + " will be removed from the deck next round!" });
                     }              
                 }
             }
-            else if splitMsg[0] == '/cheat' {
+            else if (splitMsg[0] == '/cheat') {
                 this.addCards()
                 this.sendAll('set', {status: "cards added" });
             }
