@@ -774,9 +774,11 @@ G.rateLimit = function (client, cb) {
 G.chat = function (client, msg) {
     if (!msg.text || typeof msg.text != 'string')
         return this.warn("Bad message.");
-
-    if (msg.txt.slice(0,1) == '/') {
-        if (msg.txt == '/packs') {
+    var text = msg.text.trim().slice(0, common.MESSAGE_LENGTH);
+    if (!text)
+        return this.warn("Bad message.");
+    if (msg.text.slice(0,1) == '/') {
+        if (msg.text == '/packs') {
             var notif = "all packs:\n";
             fs.readdir('sets', function (err, packs) {
                 packs.forEach(function(pack) {
@@ -794,7 +796,7 @@ G.chat = function (client, msg) {
         }
 
         else { 
-            var splitMsg = msg.txt.split(' ');
+            var splitMsg = msg.text.split(' ');
             if (splitMsg[0] == '/add') {
                 fs.readdir('sets', function(err, packs) {
                     // if (err)
@@ -824,9 +826,7 @@ G.chat = function (client, msg) {
         }
 
     }
-    var text = msg.text.trim().slice(0, common.MESSAGE_LENGTH);
-    if (!text)
-        return this.warn("Bad message.");
+    
     text = text.replace(/r[il1'*.]g+[e3'*.]?d/ig, 'good pick!');
     var self = this;
     this.rateLimit(client, function (err, okay) {
