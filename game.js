@@ -779,48 +779,64 @@ G.chat = function (client, msg) {
         return this.warn("Bad message.");
     if (msg.text.slice(0,1) == '/') {
         if (msg.text == '/packs') {
-            var notif = "all packs:\n";
+            var notif = "all packs: ";
             fs.readdir('sets', function (err, packs) {
                 packs.forEach(function(pack) {
                     if (!/black/i.test(pack))
                         notif = notif + ('"' + pack.replace('.txt', '') + '" ');
                 });
             });
-            notif = notif + "\npacks in play:\n";
+            notif = notif + "packs in play: ";
             for (let i = 0; i < PACKS.length; i++) {
                 if (!/black/i.test(PACKS[i]))
                     notif += ('"' + PACKS[i].replace('.txt', '') + '" ');
             };
-            notif += "\ntype /add <pack> or /remove <pack> to change the packs in play for the next round!"
-            this.sendAll('set', {status: notif });
+            notif += "type /add <pack> or /remove <pack> to change the packs in play for the next round!"
+            this.pushMessage({
+                    text: notif,
+                    name: System,
+                    date: new Date().getTime(),
+            });
         }
 
         else { 
             var splitMsg = msg.text.split(' ');
             if (splitMsg[0] == '/add') {
+                var notif = ''
                 fs.readdir('sets', function(err, packs) {
                     // if (err)
                     //     return cb(err);
                     packs.forEach(function(pack) {
                         if (pack.includes(splitMsg[1])) {
                              PACKS.push(pack);
-                             this.sendAll('set', {status: pack + " will be added to the deck next round!" });
+                             notif += '"'+pack+'" ';
                          }
 
                     });
                 });
+                notif += "will be added next round!"
+                this.pushMessage({
+                    text: notif,
+                    name: System,
+                    date: new Date().getTime(),
+            });
             }
             else if (splitMsg[0] == '/remove') {
+                var notif = ""
                 for (var i = 0; i < PACKS.length; i++) {
                     if (PACKS[i].includes(splitMsg[1])) {
                         PACKS.splice (i, 1)
-                        this.sendAll('set', {status: pack + " will be removed from the deck next round!" });
+                        notif += '"'+pack+'" ';
                     }              
                 }
-            }
+                notif += "will be removed next round."
+                this.pushMessage({
+                    text: notif,
+                    name: System,
+                    date: new Date().getTime(),
+            });
             else if (splitMsg[0] == '/cheat') {
                 this.addCards()
-                this.sendAll('set', {status: "cards added" });
             }
 
         }
