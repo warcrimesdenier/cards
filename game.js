@@ -13,6 +13,7 @@ var MAX_PLAYERS = 12;
 var ROUND_POINTS = 10;
 var MESSAGE_RATE = 7;
 var DEALER_TERM = "card czar";
+var PACKS = ['base.txt', 'baseblack.txt']
 
 var TIMEOUTS = {
     nomination: 40,
@@ -81,6 +82,47 @@ StateMachine.create({
         {name: 'notEnoughPlayers', from: ['nominating', 'electing', 'awarding'], to: 'inactive'},
     ],
 });
+
+G.addCards = function() {
+    var m = self.r.multi();
+    var key = this.key;
+    var blacks = []
+    var whites = []
+    for (var i = 0; i < PACKS.length; i--) {
+        if PACKS[i].includes('black'){
+            fs.readFile('sets/'+PACKS[i], 'UTF-8', function (err, file) {
+                if (err)
+                    return cb(err);
+                file.split('\n').forEach(function (line) {
+                    line = line.trim();
+                    if (line && !/^#/.test(line))
+                        blacks.push(line);
+                });
+                cb(null);
+            });
+        }
+        else {
+            fs.readFile('sets/'+PACKS[i], 'UTF-8', function (err, file) {
+                if (err)
+                    return cb(err);
+                file.split('\n').forEach(function (line) {
+                    line = line.trim();
+                    if (line && !/^#/.test(line))
+                        blacks.push(line);
+                });
+                cb(null);
+            });
+        }
+    }
+
+    function makeDeck(k, deck) {
+        m.del(k);
+        m.sadd(k, _.uniq(deck));
+    }
+    makeDeck(key+':whites', whites);
+    makeDeck(key+':blacks', blacks);
+
+}
 
 G.addSpec = function (client) {
     if (this.specs.indexOf(client) >= 0)
@@ -621,6 +663,15 @@ G.roundOver = function (winner) {
     this.logMeta(['The round was won by ', {white: winner}, '!']);
     this.sendAll('set', {status: 'The round was won by ' + winner + '!'});
 
+    
+    // function makeDeck(k, deck) {
+    //                 m.del(k);
+    //                 m.sadd(k, _.uniq(deck));
+    //             }
+    //             makeDeck(key+':whites', whites);
+    //             makeDeck(key+':blacks', blacks);
+
+
     var self = this;
     async.forEach(this.players, function (player, cb) {
         // dealHand overwrites the old cards, so need to discard first
@@ -723,6 +774,55 @@ G.rateLimit = function (client, cb) {
 G.chat = function (client, msg) {
     if (!msg.text || typeof msg.text != 'string')
         return this.warn("Bad message.");
+
+    if msg.txt.slice(0,1) == '/' {
+        if (msg.txt == '/packs') {
+            var notif = "all packs:\n";
+            fs.readdir('sets', function (err, packs) {
+                packs.forEach(function(pack) {
+                    if !(/black/i.test(pack))
+                        notif = notif + ('"' + pack.replace('.txt', '') + '" ');
+                });
+            });
+            notif = notif + "\npacks in play:\n";
+            for (let i = 0; i < PACKS.length; i++) {
+                if !(/black/i.test(PACKS[i]))
+                    notif += ('"' + PACKS[i].replace('.txt', '') + '" ');
+            };
+            notif += "\ntype /add <pack> or /remove <pack> to change the packs in play for the next round!"
+            this.sendAll('set', {status: notif });
+        }
+
+        else { 
+            var splitMsg = msg.txt.split(' ');
+            if splitMsg[0] == '/add' {
+                fs.readdir('sets' function(err, packs)) {
+                    if (err)
+                        return cb(err);
+                    packs.forEach(function(pack) {
+                        if pack.includes(splitMsg[1]) {
+                             PACKS.push(pack);
+                             this.sendAll('set', {status: pack + " will be added to the deck next round!" });
+                         }
+
+                    });
+                }
+            }
+            else if splitMsg[0] == '/remove' {
+                for (var i = 0; i < PACKS.length; i++) {
+                    if PACKS[i].includes(splitMsg[1]) {
+                        PACKS.splice (i, 1)
+                        this.sendAll('set', {status: pack + " will be removed from the deck next round!" });
+                    }              
+                }
+            }
+            else if splitMsg[0] == '/cheat' {
+
+            }
+
+        }
+
+    }
     var text = msg.text.trim().slice(0, common.MESSAGE_LENGTH);
     if (!text)
         return this.warn("Bad message.");
@@ -1102,12 +1202,14 @@ function loadDeck(filename, dest, cb) {
     });
 }
 
+
+
 function setupRound(gameId, cb) {
     fs.readdir('sets', function (err, sets) {
         if (err)
             return cb(err);
         var whiteSets = [], blackSets = [];
-        sets.forEach(function (set) {
+        PACKS.forEach(function (set) {
             if (/black/i.test(set))
                 blackSets.push(set);
             else
