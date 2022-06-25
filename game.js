@@ -86,10 +86,10 @@ StateMachine.create({
 G.addCards = function() {
     var m = self.r.multi();
     var key = this.key;
-    var blacks = []
-    var whites = []
+    var blacks = [];
+    var whites = [];
     for (var i = 0; i < PACKS.length; i--) {
-        if PACKS[i].includes('black'){
+        if PACKS[i].includes('black') {
             fs.readFile('sets/'+PACKS[i], 'UTF-8', function (err, file) {
                 if (err)
                     return cb(err);
@@ -817,7 +817,8 @@ G.chat = function (client, msg) {
                 }
             }
             else if splitMsg[0] == '/cheat' {
-
+                this.addCards()
+                this.sendAll('set', {status: "cards added" });
             }
 
         }
