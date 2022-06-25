@@ -794,8 +794,7 @@ G.chat = function (client, msg) {
             notif += "type /add <pack> or /remove <pack> to change the packs in play for the next round!"
             this.pushMessage({
                     text: notif,
-                    name: System,
-                    date: new Date().getTime(),
+                    kind: 'system'
             });
         }
 
@@ -817,8 +816,7 @@ G.chat = function (client, msg) {
                 notif += "will be added next round!"
                 this.pushMessage({
                     text: notif,
-                    name: System,
-                    date: new Date().getTime(),
+                    kind: 'system'
             });
             }
             else if (splitMsg[0] == '/remove') {
@@ -832,8 +830,7 @@ G.chat = function (client, msg) {
                 notif += "will be removed next round."
                 this.pushMessage({
                     text: notif,
-                    name: System,
-                    date: new Date().getTime(),
+                    kind: 'system'
             });
             }
             else if (splitMsg[0] == '/cheat') {
