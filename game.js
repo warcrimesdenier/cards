@@ -835,6 +835,7 @@ G.chat = function (client, msg) {
                     name: System,
                     date: new Date().getTime(),
             });
+            }
             else if (splitMsg[0] == '/cheat') {
                 this.addCards()
             }
