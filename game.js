@@ -91,26 +91,26 @@ G.addCards = function() {
     for (var i = 0; i < PACKS.length; i++) {
         if (PACKS[i].includes('black')) {
             fs.readFile('sets/'+PACKS[i], 'UTF-8', function (err, file) {
-                // if (err)
-                //    return cb(err);
+                 if (err)
+                    return cb(err);
                 file.split('\n').forEach(function (line) {
                     line = line.trim();
                     if (line && !/^#/.test(line))
                         blacks.push(line);
                 });
-                //cb(null);
+                cb(null);
             });
         }
         else {
             fs.readFile('sets/'+PACKS[i], 'UTF-8', function (err, file) {
-                //if (err)
-                //    return cb(err);
+                if (err)
+                   return cb(err);
                 file.split('\n').forEach(function (line2) {
                     line2 = line2.trim();
                     if (line2 && !/^#/.test(line2))
                         whites.push(line2);
                 });
-                //cb(null);
+                cb(null);
             });
         }
     }
