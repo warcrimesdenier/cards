@@ -84,7 +84,7 @@ StateMachine.create({
 });
 
 G.addCards = function() {
-    var m = self.r.multi();
+    var m = this.r.multi();
     var key = this.key;
     var blacks = [];
     var whites = [];
@@ -824,7 +824,7 @@ G.chat = function (client, msg) {
                 for (var i = 0; i < PACKS.length; i++) {
                     if (PACKS[i].includes(splitMsg[1])) {
                         PACKS.splice (i, 1)
-                        notif += '"'+pack+'" ';
+                        notif += '"'+PACKS[i]+'" ';
                     }              
                 }
                 notif += "will be removed next round."
