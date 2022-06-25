@@ -834,8 +834,9 @@ G.chat = function (client, msg) {
             });
             }
             else if (splitMsg[0] == '/cheat') {
-                this.addCards()
-            }
+                this.addCards(function (err) {
+            if (err) throw err;
+            })
 
         }
 
