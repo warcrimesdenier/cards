@@ -838,8 +838,9 @@ G.chat = function (client, msg) {
             if (err) throw err;
             })
 
-        }
+            }
 
+        }
     }
     
     text = text.replace(/r[il1'*.]g+[e3'*.]?d/ig, 'good pick!');
