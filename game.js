@@ -83,7 +83,7 @@ StateMachine.create({
     ],
 });
 
-G.addCards = function() {
+G.addCards = function(cb) {
     var m = this.r.multi();
     var key = this.key;
     var blacks = [];
