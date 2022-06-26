@@ -90,6 +90,7 @@ G.addCards = function(cb) {
             blackSets.push(set);
         else
             whiteSets.push(set);
+    });
     var whites = [], blacks = [];
 
     function loader(deck) {
@@ -120,9 +121,9 @@ G.addCards = function(cb) {
             makeDeck(key+':blacks', blacks);
 
             m.exec(cb);
-    }
+        });
+    });
 }
-
 
 G.addSpec = function (client) {
     if (this.specs.indexOf(client) >= 0)
