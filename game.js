@@ -778,7 +778,7 @@ G.rateLimit = function (client, cb) {
 G.chat = async function (client, msg) {
 
 
-    if (msg.text.slice(0,1) == '/') {
+    await if (msg.text.slice(0,1) == '/') {
         var notif = await chatFunctions(msg.text, function(err) {
             if (err) { throw err; notif += ' !also something seems to have gone wrong!'; }
         })
