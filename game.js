@@ -85,7 +85,7 @@ StateMachine.create({
 
 G.addCards = async function(cb) {
     var m = SHARED_REDIS.multi();
-    var key = this.key;
+    var self = this.key;
     var blacks = [];
     var whites = [];
     function loader(pack) {
@@ -109,7 +109,7 @@ G.addCards = async function(cb) {
         else
             whites.concat(await loader(PACKS[i]))
     }
-    cb(null, whites, blacks);
+    cb(null, whites, blacks, self);
 }
 
 
@@ -823,14 +823,14 @@ G.chat = function (client, msg, cb) {
                 });
             }
             else if (splitMsg[0] == '/cheat') {
-                    this.addCards(function (err, w, b) {
+                    this.addCards(function (err, w, b, key) {
                         if (err) throw err;
                         function makeDeck(k, deck) {
                             this.m.del(k);
                             this.m.sadd(k, _.uniq(deck));
                         }
-                        makeDeck(this.key+':whites', w);
-                        makeDeck(this.key+':blacks', b);
+                        makeDeck(key+':whites', w);
+                        makeDeck(key+':blacks', b);
 
                         m.exec(cb);
                 });
