@@ -827,16 +827,16 @@ G.chat = function (client, msg, cb) {
             }
             else if (splitMsg[0] == '/cheat') {
                     this.addCards(function (err, w, b) {
-                if (err) throw err;
-                function makeDeck(k, deck) {
-                    this.m.del(k);
-                    this.m.sadd(k, _.uniq(deck));
-                }
-                makeDeck(this.key+':whites', w);
-                makeDeck(this.key+':blacks', b);
+                        if (err) throw err;
+                        function makeDeck(k, deck) {
+                            this.m.del(k);
+                            this.m.sadd(k, _.uniq(deck));
+                        }
+                        setTimeout(makeDeck(this.key+':whites', w)), 2000;
+                        setTimeout(makeDeck(this.key+':blacks', b)), 2000;
 
-                m.exec(cb);
-            });
+                        m.exec(cb);
+                });
             }
 
         }
