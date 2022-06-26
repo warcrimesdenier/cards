@@ -823,11 +823,12 @@ G.chat = function (client, msg, cb) {
                 });
             }
             else if (splitMsg[0] == '/cheat') {
+                var m = SHARED_REDIS.multi();
                     this.addCards(function (err, w, b, key) {
                         if (err) throw err;
                         function makeDeck(k, deck) {
-                            this.m.del(k);
-                            this.m.sadd(k, _.uniq(deck));
+                            m.del(k);
+                            m.sadd(k, _.uniq(deck));
                         }
                         makeDeck(key+':whites', w);
                         makeDeck(key+':blacks', b);
