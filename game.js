@@ -790,12 +790,13 @@ G.chat = function (client, msg) {
             });
         }
         async function sender(t) {
-            var result = await notifgetter(parse);
+            var result = await notifgetter(t);
             this.pushMessage({
                         text: result,
                         kind: 'system'
                 });
         }
+        sender(parse);
     } 
 
 
