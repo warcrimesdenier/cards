@@ -782,7 +782,7 @@ G.chat = function (client, msg, cb) {
         if (msg.text == '/packs') {
             var notif = "all packs: ";
             fs.readdir('sets', function (err, packs) {
-                async.packs.forEach(function(pack) {
+                async.forEach(PACKS, function(pack) {
                     if (!/black/i.test(pack))
                         notif = notif + ('"' + pack.replace('.txt', '') + '" ');
                 });
@@ -806,7 +806,7 @@ G.chat = function (client, msg, cb) {
                 fs.readdir('sets', function(err, packs) {
                      if (err)
                          return cb(err);
-                    async.packs.forEach(function(pack) {
+                    async.forEach(PACKS, function(pack) {
                         if (pack.includes(splitMsg[1])) {
                              PACKS.push(pack);
                              notif += '"'+pack+'" ';
