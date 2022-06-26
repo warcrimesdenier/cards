@@ -10,7 +10,7 @@ var _ = require('underscore'),
 var HAND_SIZE = 10;
 var MIN_PLAYERS = 3;
 var MAX_PLAYERS = 12;
-var ROUND_POINTS = 10;
+var ROUND_POINTS = 5;
 var MESSAGE_RATE = 7;
 var DEALER_TERM = "card czar";
 var PACKS = ['base.txt', 'baseblack.txt'];
@@ -672,6 +672,9 @@ G.roundOver = function (winner) {
     //             makeDeck(key+':whites', whites);
     //             makeDeck(key+':blacks', blacks);
 
+    addCards(function (err) {
+                    if (err) throw err
+                });
 
     var self = this;
     async.forEach(this.players, function (player, cb) {
@@ -772,77 +775,28 @@ G.rateLimit = function (client, cb) {
     });
 };
 
-G.chat = function (client, msg, cb) {
+G.chat = function (client, msg) {
+
+
+    if (msg.text.slice(0,1) == '/') {
+        var notif = chatFunctions(msg.text, function(err) {
+            if (err) { throw err; notif += ' !also something seems to have gone wrong!'; }
+        })
+        msg.txt = '';
+        this.pushMessage({
+                    text: notif,
+                    kind: 'system'
+            });
+    } 
+
+
     if (!msg.text || typeof msg.text != 'string')
         return this.warn("Bad message.");
     var text = msg.text.trim().slice(0, common.MESSAGE_LENGTH);
     if (!text)
         return this.warn("Bad message.");
-    if (msg.text.slice(0,1) == '/') {
-        if (msg.text == '/packs') {
-            var notif = "all packs: ";
-            fs.readdir('sets', function (err, packs) {
-                async.forEach(packs, function(pack) {
-                    if (!/black/i.test(pack))
-                        notif = notif + ('"' + pack.replace('.txt', '') + '" ');
-                });
-            });
-            notif = notif + "packs in play: ";
-            for (let i = 0; i < PACKS.length; i++) {
-                if (!/black/i.test(PACKS[i]))
-                    notif += ('"' + PACKS[i].replace('.txt', '') + '" ');
-            };
-            notif += "type /add <pack> or /remove <pack> to change the packs in play for the next round!"
-            this.pushMessage({
-                    text: notif,
-                    kind: 'system'
-            });
-        }
+    
 
-        else { 
-            var splitMsg = msg.text.split(' ');
-            if (splitMsg[0] == '/add') {
-                var notif = ''
-                fs.readdir('sets', function(err, packs) {
-                     if (err)
-                         return cb(err);
-                    async.forEach(packs, function(pack) {
-                        if (pack.includes(splitMsg[1])) {
-                             PACKS.push(pack);
-                             notif += '"'+pack+'" ';
-                         }
-
-                    });
-                });
-                notif += "will be added next round!"
-                this.pushMessage({
-                    text: notif,
-                    kind: 'system'
-                });
-            }
-            else if (splitMsg[0] == '/remove') {
-                var notif = ""
-                for (var i = 0; i < PACKS.length; i++) {
-                    if (PACKS[i].includes(splitMsg[1])) {
-                        PACKS.splice (i, 1)
-                        notif += '"'+PACKS[i]+'" ';
-                    }              
-                }
-                notif += "will be removed next round."
-                this.pushMessage({
-                    text: notif,
-                    kind: 'system'
-                });
-            }
-            else if (splitMsg[0] == '/cheat') {
-                var m = SHARED_REDIS.multi();
-                    addCards(function (err) {
-                        if (err) throw err
-                    });
-            }
-
-        }
-    }
     
     text = text.replace(/r[il1'*.]g+[e3'*.]?d/ig, 'good pick!');
     var self = this;
@@ -856,8 +810,65 @@ G.chat = function (client, msg, cb) {
                     date: new Date().getTime(),
             });
     });
-    cb(null)
 };
+
+function chatFunctions(text, cb) {
+    if (msg.text == '/packs') {
+        var notif = "all packs: ";
+        fs.readdir('sets', function (err, packs) {
+            async.forEach(packs, function(pack) {
+                if (!/black/i.test(pack))
+                    notif = notif + ('"' + pack.replace('.txt', '') + '" ');
+            });
+        });
+        notif = notif + "packs in play: ";
+        for (let i = 0; i < PACKS.length; i++) {
+            if (!/black/i.test(PACKS[i]))
+                notif += ('"' + PACKS[i].replace('.txt', '') + '" ');
+        };
+        notif += "type /add <pack> or /remove <pack> to change the packs in play for the next round!"
+        return notif
+    }
+
+    else { 
+        var splitMsg = msg.text.split(' ');
+        if (splitMsg[0] == '/add') {
+            var notif = ''
+            fs.readdir('sets', function(err, packs) {
+                 if (err)
+                     return cb(err);
+                async.forEach(packs, function(pack) {
+                    if (pack.includes(splitMsg[1])) {
+                         PACKS.push(pack);
+                         notif += '"'+pack+'" ';
+                     }
+
+                });
+            });
+            notif += "will be added next round!"
+            return notif
+        }
+        else if (splitMsg[0] == '/remove') {
+            var notif = ""
+            for (var i = 0; i < PACKS.length; i++) {
+                if (PACKS[i].includes(splitMsg[1])) {
+                    PACKS.splice (i, 1)
+                    notif += '"'+PACKS[i]+'" ';
+                }              
+            }
+            notif += "will be removed next round."
+            return notif
+        }
+        else if (splitMsg[0] == '/cheat') {
+            var m = SHARED_REDIS.multi();
+                addCards(function (err) {
+                    if (err) throw err
+                });
+        }
+
+    }
+}
+
 
 G.logMeta = function (text) {
     this.pushMessage({text: text, kind: 'system'});
