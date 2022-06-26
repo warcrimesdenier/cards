@@ -110,7 +110,7 @@ G.addCards = function(cb) {
                 return cb("Empty black deck!");
 
             var m = SHARED_REDIS.multi();
-            var key = 'cam:game:' + id;
+            var key = 'cam:game:' + this.id;
             m.del([key+':whiteDiscards', key+':blackDiscards', key+':scores', key+':players']);
 
             function makeDeck(k, deck) {
@@ -782,7 +782,7 @@ G.chat = function (client, msg, cb) {
         if (msg.text == '/packs') {
             var notif = "all packs: ";
             fs.readdir('sets', function (err, packs) {
-                async.forEach(PACKS, function(pack) {
+                async.forEach(packs, function(pack) {
                     if (!/black/i.test(pack))
                         notif = notif + ('"' + pack.replace('.txt', '') + '" ');
                 });
@@ -806,7 +806,7 @@ G.chat = function (client, msg, cb) {
                 fs.readdir('sets', function(err, packs) {
                      if (err)
                          return cb(err);
-                    async.forEach(PACKS, function(pack) {
+                    async.forEach(packs, function(pack) {
                         if (pack.includes(splitMsg[1])) {
                              PACKS.push(pack);
                              notif += '"'+pack+'" ';
