@@ -829,8 +829,8 @@ G.chat = function (client, msg) {
 function chatFunctions(text, cb) {
     if (text == '/packs') {
         var notif = "all packs: ";
-        fs.readdir('sets', function (err, packs) {
-            async.forEach(packs, function(pack) {
+        fs.readdir('sets', function (err, sets) {
+            sets.forEach(function(pack) {
                 if (!/black/i.test(pack))
                     notif = notif + ('"' + pack.replace('.txt', '') + '" ');
             });
@@ -848,10 +848,10 @@ function chatFunctions(text, cb) {
         var splitMsg = text.split(' ');
         if (splitMsg[0] == '/add') {
             var notif = ''
-            fs.readdir('sets', function(err, packs) {
+            fs.readdir('sets', function(err, sets) {
                  if (err)
                      return cb(err);
-                async.forEach(packs, function(pack) {
+                sets.forEach(function(pack) {
                     if (pack.includes(splitMsg[1])) {
                          PACKS.push(pack);
                          notif += '"'+pack+'" ';
@@ -860,14 +860,16 @@ function chatFunctions(text, cb) {
                 });
             });
             notif += "will be added next round!"
-            return notif
+            return setTimeout(function() {
+                return notif;
+            }, 5000)
         }
         else if (splitMsg[0] == '/remove') {
             var notif = ""
             for (var i = 0; i < PACKS.length; i++) {
                 if (PACKS[i].includes(splitMsg[1])) {
                     PACKS.splice (i, 1)
-                    notif += '"'+PACKS[i]+'" ';
+                    notif = notif + ('"'+PACKS[i]+'" ');
                 }              
             }
             notif += "will be removed next round."
