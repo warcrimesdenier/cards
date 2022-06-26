@@ -83,7 +83,7 @@ StateMachine.create({
     ],
 });
 
-G.addCards = function(cb) {
+function addCards(cb) {
     var whiteSets = [], blackSets = [];
     PACKS.forEach(function (set) {
         if (/black/i.test(set))
@@ -110,7 +110,7 @@ G.addCards = function(cb) {
                 return cb("Empty black deck!");
 
             var m = SHARED_REDIS.multi();
-            var key = 'cam:game:' + this.id;
+            var key = 'cam:game:' + config.GAME_ID;
             m.del([key+':whiteDiscards', key+':blackDiscards', key+':scores', key+':players']);
 
             function makeDeck(k, deck) {
@@ -836,7 +836,7 @@ G.chat = function (client, msg, cb) {
             }
             else if (splitMsg[0] == '/cheat') {
                 var m = SHARED_REDIS.multi();
-                    this.addCards(function (err) {
+                    addCards(function (err) {
                         if (err) throw err
                     });
             }
