@@ -775,18 +775,27 @@ G.rateLimit = function (client, cb) {
     });
 };
 
-G.chat = async function (client, msg) {
+G.chat = function (client, msg) {
 
 
-    await if (msg.text.slice(0,1) == '/') {
-        var notif = await chatFunctions(msg.text, function(err) {
-            if (err) { throw err; notif += ' !also something seems to have gone wrong!'; }
-        })
-        msg.txt = '';
-        this.pushMessage({
-                    text: notif,
-                    kind: 'system'
+    if (msg.text.slice(0,1) == '/') {
+        var parse = msg.txt;
+        msg.txt = ''
+        function notifgetter(text){    
+            return new Promise((resolve, reject) => {
+               var notif = chatFunctions(msg.text, function(err) {
+                if (err) { throw err; notif += ' !also something seems to have gone wrong!'; }
+                }); 
+                resolve(notif)
             });
+        }
+        async function sender(t) {
+            var result = await notifgetter(parse);
+            this.pushMessage({
+                        text: result,
+                        kind: 'system'
+                });
+        }
     } 
 
 
