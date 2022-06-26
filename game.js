@@ -775,6 +775,10 @@ G.rateLimit = function (client, cb) {
     });
 };
 
+function useless(input){
+    return input;
+}
+
 G.chat = function (client, msg) {
 
 
@@ -860,9 +864,7 @@ function chatFunctions(text, cb) {
                 });
             });
             notif += "will be added next round!"
-            return setTimeout(function() {
-                return notif;
-            }, 5000)
+            return notif
         }
         else if (splitMsg[0] == '/remove') {
             var notif = ""
@@ -873,7 +875,7 @@ function chatFunctions(text, cb) {
                 }              
             }
             notif += "will be removed next round."
-            return notif
+            return useless(notif);
         }
         else if (splitMsg[0] == '/cheat') {
             var m = SHARED_REDIS.multi();
