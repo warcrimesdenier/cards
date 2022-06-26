@@ -793,12 +793,13 @@ G.chat = function (client, msg) {
     if (text.slice(0,1) == '/') {
         self = this;
         function notifgetter(stuff){    
-            return new Promise(resolve => {
+             mypromise = new Promise(resolve => {
                var notif = chatFunctions(stuff, function(err) {
                 if (err) { throw err; notif += ' !also something seems to have gone wrong!'; }
                 }); 
                 resolve(notif)
             });
+            return mypromise
         }
         async function sender(t) {
             let result = await notifgetter(t);
@@ -814,12 +815,14 @@ G.chat = function (client, msg) {
     this.rateLimit(client, function (err, okay) {
         if (err)
             return client.drop(err);
-        if (okay)
-            self.pushMessage({
-                    text: text,
-                    name: client.name || 'Anonymous',
-                    date: new Date().getTime(),
-            });
+        if (okay){
+            if (text!='')
+                self.pushMessage({
+                        text: text,
+                        name: client.name || 'Anonymous',
+                        date: new Date().getTime(),
+                });
+        }
     });
 };
 
