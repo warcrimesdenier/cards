@@ -84,7 +84,7 @@ StateMachine.create({
 });
 
 G.addCards = function(cb) {
-    var m = this.r.multi();
+    var m = SHARED_REDIS.multi();
     var key = this.key;
     var blacks = [];
     var whites = [];
