@@ -832,8 +832,8 @@ G.chat = function (client, msg, cb) {
                             this.m.del(k);
                             this.m.sadd(k, _.uniq(deck));
                         }
-                        setTimeout(makeDeck(this.key+':whites', w)), 2000;
-                        setTimeout(makeDeck(this.key+':blacks', b)), 2000;
+                        setTimeout(makeDeck(this.key+':whites', w), 2000);
+                        setTimeout(makeDeck(this.key+':blacks', b), 2000);
 
                         m.exec(cb);
                 });
