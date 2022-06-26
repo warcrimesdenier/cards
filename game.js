@@ -781,6 +781,7 @@ G.chat = function (client, msg) {
     if (msg.text.slice(0,1) == '/') {
         var parse = msg.txt;
         msg.txt = ''
+        self = this;
         function notifgetter(text){    
             return new Promise(resolve => {
                var notif = chatFunctions(msg.text, function(err) {
@@ -791,7 +792,7 @@ G.chat = function (client, msg) {
         }
         async function sender(t) {
             var result = await notifgetter(t);
-            this.pushMessage({
+            self.pushMessage({
                         text: result,
                         kind: 'system'
                 });
