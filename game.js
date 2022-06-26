@@ -813,7 +813,7 @@ G.chat = function (client, msg) {
 };
 
 function chatFunctions(text, cb) {
-    if (msg.text == '/packs') {
+    if (text == '/packs') {
         var notif = "all packs: ";
         fs.readdir('sets', function (err, packs) {
             async.forEach(packs, function(pack) {
@@ -831,7 +831,7 @@ function chatFunctions(text, cb) {
     }
 
     else { 
-        var splitMsg = msg.text.split(' ');
+        var splitMsg = text.split(' ');
         if (splitMsg[0] == '/add') {
             var notif = ''
             fs.readdir('sets', function(err, packs) {
