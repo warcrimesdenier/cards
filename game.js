@@ -864,7 +864,7 @@ function chatFunctions(text, cb) {
                 });
             });
             notif += "will be added next round!"
-            return notif
+            return setTimeout(useless(notif))
         }
         else if (splitMsg[0] == '/remove') {
             var notif = ""
