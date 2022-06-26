@@ -83,33 +83,44 @@ StateMachine.create({
     ],
 });
 
-G.addCards = async function(cb) {
-    var m = SHARED_REDIS.multi();
-    var self = this.key;
-    var blacks = [];
-    var whites = [];
-    function loader(pack) {
-        cards = []
-        fs.readFile(('sets/'+pack), 'UTF-8', function (err, file) {
-             if (err) {
-                return cb(err);
-                console.log("failed at read file")}
-            file.split('\n').forEach(function (line) {
-                line = line.trim();
-                if (line && !/^#/.test(line))
-                    cards.push(line);
-            });           
-        });      
-        return cards
-    };
-
-    for (var i = 0; i < PACKS.length; i++) {
-        if (PACKS[i].includes('black'))
-            blacks.concat(await loader(PACKS[i]))
+G.addCards = function(cb) {
+    var whiteSets = [], blackSets = [];
+    PACKS.forEach(function (set) {
+        if (/black/i.test(set))
+            blackSets.push(set);
         else
-            whites.concat(await loader(PACKS[i]))
+            whiteSets.push(set);
+    var whites = [], blacks = [];
+
+    function loader(deck) {
+        return function (name, cb) {
+            loadDeck('sets/'+name, deck, cb);
+        };
     }
-    cb(null, whites, blacks, self);
+    async.forEach(whiteSets, loader(whites), function (err) {
+        if (err)
+            return cb(err);
+        if (!whites.length)
+            return cb("Empty white deck!");
+        async.forEach(blackSets, loader(blacks), function (err) {
+            if (err)
+                return cb(err);
+            if (!blacks.length)
+                return cb("Empty black deck!");
+
+            var m = SHARED_REDIS.multi();
+            var key = 'cam:game:' + id;
+            m.del([key+':whiteDiscards', key+':blackDiscards', key+':scores', key+':players']);
+
+            function makeDeck(k, deck) {
+                m.del(k);
+                m.sadd(k, _.uniq(deck));
+            }
+            makeDeck(key+':whites', whites);
+            makeDeck(key+':blacks', blacks);
+
+            m.exec(cb);
+    }
 }
 
 
@@ -770,7 +781,7 @@ G.chat = function (client, msg, cb) {
         if (msg.text == '/packs') {
             var notif = "all packs: ";
             fs.readdir('sets', function (err, packs) {
-                packs.forEach(function(pack) {
+                async.packs.forEach(function(pack) {
                     if (!/black/i.test(pack))
                         notif = notif + ('"' + pack.replace('.txt', '') + '" ');
                 });
@@ -794,7 +805,7 @@ G.chat = function (client, msg, cb) {
                 fs.readdir('sets', function(err, packs) {
                      if (err)
                          return cb(err);
-                    packs.forEach(function(pack) {
+                    async.packs.forEach(function(pack) {
                         if (pack.includes(splitMsg[1])) {
                              PACKS.push(pack);
                              notif += '"'+pack+'" ';
@@ -824,17 +835,9 @@ G.chat = function (client, msg, cb) {
             }
             else if (splitMsg[0] == '/cheat') {
                 var m = SHARED_REDIS.multi();
-                    this.addCards(function (err, w, b, key) {
-                        if (err) throw err;
-                        function makeDeck(k, deck) {
-                            m.del(k);
-                            m.sadd(k, _.uniq(deck));
-                        }
-                        makeDeck(key+':whites', w);
-                        makeDeck(key+':blacks', b);
-
-                        m.exec(cb);
-                });
+                    this.addCards(function (err) {
+                        if (err) throw err
+                    });
             }
 
         }
