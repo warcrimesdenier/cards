@@ -780,18 +780,18 @@ G.chat = function (client, msg) {
 
     if (msg.text.slice(0,1) == '/') {
         var parse = msg.txt;
-        msg.txt = ''
+        msg.txt = '';
         self = this;
-        function notifgetter(text){    
+        function notifgetter(stuff){    
             return new Promise(resolve => {
-               var notif = chatFunctions(msg.text, function(err) {
+               var notif = chatFunctions(stuff, function(err) {
                 if (err) { throw err; notif += ' !also something seems to have gone wrong!'; }
                 }); 
                 resolve(notif)
             });
         }
         async function sender(t) {
-            var result = await notifgetter(t);
+            let result = await notifgetter(t);
             self.pushMessage({
                         text: result,
                         kind: 'system'
