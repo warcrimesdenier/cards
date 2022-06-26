@@ -828,14 +828,12 @@ G.chat = function (client, msg, cb) {
             else if (splitMsg[0] == '/cheat') {
                     this.addCards(function (err, w, b) {
                 if (err) throw err;
-                var m = SHARED_REDIS.multi();
-                var key = 'cam:game:' + gameId;
                 function makeDeck(k, deck) {
-                    m.del(k);
-                    m.sadd(k, _.uniq(deck));
+                    this.m.del(k);
+                    this.m.sadd(k, _.uniq(deck));
                 }
-                makeDeck(key+':whites', w);
-                makeDeck(key+':blacks', b);
+                makeDeck(this.key+':whites', w);
+                makeDeck(this.key+':blacks', b);
 
                 m.exec(cb);
             });
