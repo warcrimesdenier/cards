@@ -778,9 +778,19 @@ G.rateLimit = function (client, cb) {
 G.chat = function (client, msg) {
 
 
-    if (msg.text.slice(0,1) == '/') {
-        var parse = msg.txt;
-        msg.txt = '';
+   
+
+
+    if (!msg.text || typeof msg.text != 'string')
+        return this.warn("Bad message.");
+    var text = msg.text.trim().slice(0, common.MESSAGE_LENGTH);
+    if (!text)
+        return this.warn("Bad message.");
+    
+
+    
+    text = text.replace(/r[il1'*.]g+[e3'*.]?d/ig, 'good pick!');
+    if (text.slice(0,1) == '/') {
         self = this;
         function notifgetter(stuff){    
             return new Promise(resolve => {
@@ -797,19 +807,9 @@ G.chat = function (client, msg) {
                         kind: 'system'
                 });
         }
-        sender(parse);
+        sender(text);
+        text = '';
     } 
-
-
-    if (!msg.text || typeof msg.text != 'string')
-        return this.warn("Bad message.");
-    var text = msg.text.trim().slice(0, common.MESSAGE_LENGTH);
-    if (!text)
-        return this.warn("Bad message.");
-    
-
-    
-    text = text.replace(/r[il1'*.]g+[e3'*.]?d/ig, 'good pick!');
     var self = this;
     this.rateLimit(client, function (err, okay) {
         if (err)
