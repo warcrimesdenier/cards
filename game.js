@@ -111,7 +111,16 @@ G.addCards = function(cb) {
         });      
     
     });
-    cb(null, whites, blacks, key);
+    function makeDeck(k, deck) {
+        m.del(k);
+        m.sadd(k, _.uniq(deck));
+    }
+    makeDeck(key+':whites', whites);
+    makeDeck(key+':blacks', blacks);
+
+    m.exec(cb);
+
+    cb(null);
 }
 
 G.makeDeck = function(k, deck) {
@@ -831,12 +840,8 @@ G.chat = function (client, msg) {
                 });
             }
             else if (splitMsg[0] == '/cheat') {
-                    this.addCards(function (err, w, b, k) {
+                    addCards(function (err) {
                 if (err) throw err;
-                else {
-                    this.makeDeck(k+':whites', w);
-                    this.makeDeck(k+':blacks', b);
-                }
             });
             }
 
