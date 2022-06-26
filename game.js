@@ -83,35 +83,32 @@ StateMachine.create({
     ],
 });
 
-G.addCards = function(cb) {
+G.addCards = async function(cb) {
     var m = SHARED_REDIS.multi();
     var key = this.key;
     var blacks = [];
     var whites = [];
-    PACKS.forEach(function (pack) {
+    function loader(pack) {
+        cards = []
         fs.readFile(('sets/'+pack), 'UTF-8', function (err, file) {
              if (err) {
                 return cb(err);
                 console.log("failed at read file")}
-            if (pack.includes('black')) {
-                file.split('\n').forEach(function (line) {
-                    line = line.trim();
-                    if (line && !/^#/.test(line))
-                        blacks.push(line);
-                });
-            }
-            else {
-                file.split('\n').forEach(function (line2) {
-                    line2 = line2.trim();
-                    if (line2 && !/^#/.test(line2))
-                        whites.push(line2);
-                });
-            }
-           
+            file.split('\n').forEach(function (line) {
+                line = line.trim();
+                if (line && !/^#/.test(line))
+                    cards.push(line);
+            });           
         });      
-    
-    });
+        return cards
+    };
 
+    for (var i = 0; i < PACKS.length; i++) {
+        if (PACKS[i].includes('black'))
+            blacks.concat(await loader(PACKS[i]))
+        else
+            whites.concat(await loader(PACKS[i]))
+    }
     cb(null, whites, blacks);
 }
 
@@ -832,8 +829,8 @@ G.chat = function (client, msg, cb) {
                             this.m.del(k);
                             this.m.sadd(k, _.uniq(deck));
                         }
-                        setTimeout(makeDeck(this.key+':whites', w), 2000);
-                        setTimeout(makeDeck(this.key+':blacks', b), 2000);
+                        makeDeck(this.key+':whites', w);
+                        makeDeck(this.key+':blacks', b);
 
                         m.exec(cb);
                 });
