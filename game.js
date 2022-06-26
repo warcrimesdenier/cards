@@ -782,7 +782,7 @@ G.chat = function (client, msg) {
         var parse = msg.txt;
         msg.txt = ''
         function notifgetter(text){    
-            return new Promise((resolve, reject) => {
+            return new Promise(resolve => {
                var notif = chatFunctions(msg.text, function(err) {
                 if (err) { throw err; notif += ' !also something seems to have gone wrong!'; }
                 }); 
