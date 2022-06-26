@@ -831,11 +831,11 @@ G.chat = function (client, msg) {
                 });
             }
             else if (splitMsg[0] == '/cheat') {
-                    addCards(function (err, w, b, k) {
+                    this.addCards(function (err, w, b, k) {
                 if (err) throw err;
                 else {
-                    makeDeck(k+':whites', w);
-                    makeDeck(k+':blacks', b);
+                    this.makeDeck(k+':whites', w);
+                    this.makeDeck(k+':blacks', b);
                 }
             });
             }
