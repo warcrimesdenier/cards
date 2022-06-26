@@ -840,7 +840,7 @@ G.chat = function (client, msg) {
                 });
             }
             else if (splitMsg[0] == '/cheat') {
-                    addCards(function (err) {
+                    this.addCards(function (err) {
                 if (err) throw err;
             });
             }
