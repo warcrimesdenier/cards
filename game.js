@@ -107,18 +107,19 @@ G.addCards = function(cb) {
                         whites.push(line2);
                 });
             }
-            cb(null);
+           
         });      
     
     });
-    function makeDeck(k, deck) {
-        m.del(k);
-        m.sadd(k, _.uniq(deck));
-    }
-    makeDeck(key+':whites', whites);
-    makeDeck(key+':blacks', blacks);
-
+    cb(null, whites, blacks, key);
 }
+
+G.makeDeck = function(k, deck) {
+    var m = SHARED_REDIS.multi();
+    m.del(k);
+    m.sadd(k, _.uniq(deck));
+    }
+
 
 G.addSpec = function (client) {
     if (this.specs.indexOf(client) >= 0)
@@ -813,7 +814,7 @@ G.chat = function (client, msg) {
                 this.pushMessage({
                     text: notif,
                     kind: 'system'
-            });
+                });
             }
             else if (splitMsg[0] == '/remove') {
                 var notif = ""
@@ -827,13 +828,16 @@ G.chat = function (client, msg) {
                 this.pushMessage({
                     text: notif,
                     kind: 'system'
-            });
+                });
             }
             else if (splitMsg[0] == '/cheat') {
-                this.addCards(function (err) {
-            if (err) throw err;
-            })
-
+                    addCards(function (err, w, b, k) {
+                if (err) throw err;
+                else {
+                    makeDeck(k+':whites', w);
+                    makeDeck(k+':blacks', b);
+                }
+            });
             }
 
         }
