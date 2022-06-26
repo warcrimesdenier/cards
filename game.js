@@ -111,23 +111,9 @@ G.addCards = function(cb) {
         });      
     
     });
-    function makeDeck(k, deck) {
-        m.del(k);
-        m.sadd(k, _.uniq(deck));
-    }
-    makeDeck(key+':whites', whites);
-    makeDeck(key+':blacks', blacks);
 
-    m.exec(cb);
-
-    cb(null);
+    cb(null, whites, blacks);
 }
-
-G.makeDeck = function(k, deck) {
-    var m = SHARED_REDIS.multi();
-    m.del(k);
-    m.sadd(k, _.uniq(deck));
-    }
 
 
 G.addSpec = function (client) {
@@ -777,7 +763,7 @@ G.rateLimit = function (client, cb) {
     });
 };
 
-G.chat = function (client, msg) {
+G.chat = function (client, msg, cb) {
     if (!msg.text || typeof msg.text != 'string')
         return this.warn("Bad message.");
     var text = msg.text.trim().slice(0, common.MESSAGE_LENGTH);
@@ -809,8 +795,8 @@ G.chat = function (client, msg) {
             if (splitMsg[0] == '/add') {
                 var notif = ''
                 fs.readdir('sets', function(err, packs) {
-                    // if (err)
-                    //     return cb(err);
+                     if (err)
+                         return cb(err);
                     packs.forEach(function(pack) {
                         if (pack.includes(splitMsg[1])) {
                              PACKS.push(pack);
@@ -840,8 +826,18 @@ G.chat = function (client, msg) {
                 });
             }
             else if (splitMsg[0] == '/cheat') {
-                    this.addCards(function (err) {
+                    this.addCards(function (err, w, b) {
                 if (err) throw err;
+                var m = SHARED_REDIS.multi();
+                var key = 'cam:game:' + gameId;
+                function makeDeck(k, deck) {
+                    m.del(k);
+                    m.sadd(k, _.uniq(deck));
+                }
+                makeDeck(key+':whites', w);
+                makeDeck(key+':blacks', b);
+
+                m.exec(cb);
             });
             }
 
@@ -860,6 +856,7 @@ G.chat = function (client, msg) {
                     date: new Date().getTime(),
             });
     });
+    cb(null)
 };
 
 G.logMeta = function (text) {

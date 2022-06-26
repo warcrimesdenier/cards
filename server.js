@@ -289,7 +289,9 @@ C.handle_setName = function (msg) {
 C.handle_chat = function (msg) {
     if (!this.game)
         return this.warn("Not viewing any games!");
-    this.game.chat(this, msg);
+    this.game.chat(this, msg, function (err) {
+        if (err) throw err;
+    });
 };
 
 C.handle_suggest = function (msg) {
