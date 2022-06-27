@@ -832,18 +832,22 @@ function chatFunctions(text, cb) {
     if (text == '/packs') {
         var notif = "all packs: ";
         //var packs = fs.readdirSync('sets');
-        for (var i = 0; i < packs.length; i++) {
-            if (!/black/i.test(packs[i])){
-                notif += ('"' + packs[i].replace('.txt', '') + '" ');
-            }
-        }
+        // for (var i = 0; i < packs.length; i++) {
+        //     if (!/black/i.test(packs[i])){
+        //         notif += ('"' + packs[i].replace('.txt', '') + '" ');
+        //     }
+        // }
+
+
         // fs.readdir('sets', function (err, sets) {
         //     sets.forEach(function(pack) {
         //         if (!/black/i.test(pack))
         //             notif = notif + ('"' + pack.replace('.txt', '') + '" ');
         //     });
         // });
-        notif = notif + "packs in play: ";
+
+
+        notif += "packs in play: ";
         for (let i = 0; i < PACKS.length; i++) {
             if (!/black/i.test(PACKS[i]))
                 notif += ('"' + PACKS[i].replace('.txt', '') + '" ');
