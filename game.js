@@ -857,24 +857,30 @@ function chatFunctions(text, cb) {
                     if (pack.includes(splitMsg[1])) {
                         if (!PACKS.includes(pack)){
                             PACKS.push(pack);
-                            notif += '"'+ pack.replace('.txt','') +'" ';
-                        }else{notif += '"' + pack.replace('.txt','') + '" is already added!'}
+                            if (!pack.includes('black'))
+                                notif += '"'+ pack.replace('.txt','') +'" will be added next round!';
+                        }else{
+                            if (!pack.includes('black'))
+                                notif += '"' + pack.replace('.txt','') + '" is already added!';
+                        }
                     }
 
                 });
-            notif += "will be added next round!"
             return notif
         }
         else if (splitMsg[0] == '/remove') {
             var notif = ""
             for (var i = 0; i < PACKS.length; i++) {
                 if (PACKS[i].includes(splitMsg[1])) {
+                    if (!PACKS[i].includes('black')){
+                        notif += ('"'+PACKS[i].replace('.txt', '') +'" ');
+                    }
                     PACKS.splice (i, 1)
-                    notif += ('"'+PACKS[i].replace('.txt', '') +'" ');
+                    
                 }              
             }
             if (notif != "") {notif += "will be removed next round."}
-                else{notif = splitMsg[1] + " isn't in the list!"}
+                else{notif = splitMsg[1] + " isn't a currently active pack!"}
             return notif;
         }
         else if (splitMsg[0] == '/cheat') {
