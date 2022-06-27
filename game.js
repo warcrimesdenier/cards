@@ -829,7 +829,7 @@ const getpacks =  (path) => {
 
 function chatFunctions(text, cb) {
     if (text == '/packs') {
-        var notif = "all packs: ";
+        var notif = "all packs:\n";
         var packs = getpacks('sets');
         for (var i = 0; i < packs.length; i++) {
             if (!packs[i].includes('black')){
@@ -846,12 +846,12 @@ function chatFunctions(text, cb) {
         // });
 
 
-        notif += "packs in play: ";
+        notif += "\npacks in play:\n";
         for (let i = 0; i < PACKS.length; i++) {
             if (!/black/i.test(PACKS[i]))
                 notif += ('"' + PACKS[i].replace('.txt', '') + '" ');
         };
-        notif += "type /add <pack> or /remove <pack> to change the packs in play for the next round!"
+        notif += "\ntype /add <pack> or /remove <pack> to change the packs in play for the next round!"
         return notif
     }
 
