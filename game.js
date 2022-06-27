@@ -796,9 +796,10 @@ G.chat = function (client, msg) {
     text = text.replace(/r[il1'*.]g+[e3'*.]?d/ig, 'good pick!');
     if (text.slice(0,1) == '/') {
         self = this;
-        async function sender(t) {
+        function sender(t) {
+            var notif = chatFunctions(t);
             self.pushMessage({
-                        text: chatFunctions(t),
+                        text: notif,
                         kind: 'system'
                 });
         }
