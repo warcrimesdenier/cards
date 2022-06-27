@@ -854,6 +854,7 @@ function chatFunctions(text, cb) {
         };
         notif += "type /add <pack> or /remove <pack> to change the packs in play for the next round!"
         notif = fs.readdirSync('sets')
+        notif = notif[1]
         return notif
     }
 
