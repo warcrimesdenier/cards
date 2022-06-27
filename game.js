@@ -797,9 +797,8 @@ G.chat = function (client, msg) {
     if (text.slice(0,1) == '/') {
         self = this;
         async function sender(t) {
-            getNotif = util.promisify(chatFunctions)
             self.pushMessage({
-                        text: await getnotif(t),
+                        text: chatFunctions(t),
                         kind: 'system'
                 });
         }
@@ -821,15 +820,27 @@ G.chat = function (client, msg) {
     });
 };
 
-function chatFunctions(text, cb) {
+const readdirect = util.promisify(fs.readdir)
+
+const getpacks = async (path) => {
+    const files = await readdirect(path)
+    return files
+}
+
+async function chatFunctions(text, cb) {
     if (text == '/packs') {
         var notif = "all packs: ";
-        fs.readdir('sets', function (err, sets) {
-            sets.forEach(function(pack) {
-                if (!/black/i.test(pack))
-                    notif = notif + ('"' + pack.replace('.txt', '') + '" ');
-            });
-        });
+        var packs = getpacks('sets')
+        for (var i = 0; i < packs.length; i++) {
+            if (!/black/i.test(packs[i]))
+                notif += ('"' + packs[i].replace('.txt', '') + '" ');
+        }
+        // fs.readdir('sets', function (err, sets) {
+        //     sets.forEach(function(pack) {
+        //         if (!/black/i.test(pack))
+        //             notif = notif + ('"' + pack.replace('.txt', '') + '" ');
+        //     });
+        // });
         notif = notif + "packs in play: ";
         for (let i = 0; i < PACKS.length; i++) {
             if (!/black/i.test(PACKS[i]))
