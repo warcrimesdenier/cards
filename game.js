@@ -828,10 +828,10 @@ const getpacks = async (path) => {
     return files
 }
 
-async function chatFunctions(text, cb) {
+function chatFunctions(text, cb) {
     if (text == '/packs') {
         var notif = "all packs: ";
-        var packs = fs.readdirSync('sets');
+        //var packs = fs.readdirSync('sets');
         for (var i = 0; i < packs.length; i++) {
             if (!/black/i.test(packs[i])){
                 notif += ('"' + packs[i].replace('.txt', '') + '" ');
@@ -849,6 +849,7 @@ async function chatFunctions(text, cb) {
                 notif += ('"' + PACKS[i].replace('.txt', '') + '" ');
         };
         notif += "type /add <pack> or /remove <pack> to change the packs in play for the next round!"
+        notif = fs.readdirSync('sets')
         return notif
     }
 
