@@ -831,7 +831,7 @@ const getpacks = async (path) => {
 async function chatFunctions(text, cb) {
     if (text == '/packs') {
         var notif = "all packs: ";
-        var packs = getpacks('sets')
+        var packs = fs.readdirSync('sets');
         for (var i = 0; i < packs.length; i++) {
             if (!/black/i.test(packs[i]))
                 notif += ('"' + packs[i].replace('.txt', '') + '" ');
