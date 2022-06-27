@@ -821,22 +821,21 @@ G.chat = function (client, msg) {
     });
 };
 
-const readdirect = util.promisify(fs.readdir)
 
-const getpacks = async (path) => {
-    const files = await readdirect(path)
+const getpacks =  (path) => {
+    const files = fs.readdirSync('sets')
     return files
 }
 
 function chatFunctions(text, cb) {
     if (text == '/packs') {
         var notif = "all packs: ";
-        //var packs = fs.readdirSync('sets');
-        // for (var i = 0; i < packs.length; i++) {
-        //     if (!/black/i.test(packs[i])){
-        //         notif += ('"' + packs[i].replace('.txt', '') + '" ');
-        //     }
-        // }
+        var packs = getpacks('sets');
+        for (var i = 0; i < packs.length; i++) {
+            if (!packs[i].includes('black')){
+                notif += ('"' + packs[i].replace('.txt', '') + '" ');
+            }
+        }
 
 
         // fs.readdir('sets', function (err, sets) {
@@ -853,8 +852,6 @@ function chatFunctions(text, cb) {
                 notif += ('"' + PACKS[i].replace('.txt', '') + '" ');
         };
         notif += "type /add <pack> or /remove <pack> to change the packs in play for the next round!"
-        notif = fs.readdirSync('sets')
-        notif = notif[1]
         return notif
     }
 
@@ -881,7 +878,7 @@ function chatFunctions(text, cb) {
             for (var i = 0; i < PACKS.length; i++) {
                 if (PACKS[i].includes(splitMsg[1])) {
                     PACKS.splice (i, 1)
-                    notif = notif + ('"'+PACKS[i]+'" ');
+                    notif += ('"'+PACKS[i]+'" ');
                 }              
             }
             notif += "will be removed next round."
