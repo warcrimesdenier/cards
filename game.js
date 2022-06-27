@@ -833,8 +833,9 @@ async function chatFunctions(text, cb) {
         var notif = "all packs: ";
         var packs = fs.readdirSync('sets');
         for (var i = 0; i < packs.length; i++) {
-            if (!/black/i.test(packs[i]))
+            if (!/black/i.test(packs[i])){
                 notif += ('"' + packs[i].replace('.txt', '') + '" ');
+            }
         }
         // fs.readdir('sets', function (err, sets) {
         //     sets.forEach(function(pack) {
