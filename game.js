@@ -796,19 +796,10 @@ G.chat = function (client, msg) {
     text = text.replace(/r[il1'*.]g+[e3'*.]?d/ig, 'good pick!');
     if (text.slice(0,1) == '/') {
         self = this;
-        function notifgetter(stuff){    
-             mypromise = new Promise(resolve => {
-               var notif = chatFunctions(stuff, function(err) {
-                if (err) { throw err; notif += ' !also something seems to have gone wrong!'; }
-                }); 
-                resolve(notif)
-            });
-            return mypromise
-        }
+        var getNotif = util.promisify(chatFunctions)
         async function sender(t) {
-            let result = await notifgetter(t);
             self.pushMessage({
-                        text: result,
+                        text: await getnotif(t),
                         kind: 'system'
                 });
         }
@@ -864,7 +855,7 @@ function chatFunctions(text, cb) {
                 });
             });
             notif += "will be added next round!"
-            return setTimeout(() => {return notif}, 2000)
+            return notif
         }
         else if (splitMsg[0] == '/remove') {
             var notif = ""
@@ -875,7 +866,7 @@ function chatFunctions(text, cb) {
                 }              
             }
             notif += "will be removed next round."
-            return useless(notif);
+            return notif;
         }
         else if (splitMsg[0] == '/cheat') {
             var m = SHARED_REDIS.multi();
