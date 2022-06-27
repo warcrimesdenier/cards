@@ -853,7 +853,7 @@ function chatFunctions(text, cb) {
         if (splitMsg[0] == '/add') {
             var notif = ''
             var packs = getpacks('sets')
-                sets.forEach(function(pack) {
+                packs.forEach(function(pack) {
                     if (pack.includes(splitMsg[1])) {
                         if (!PACKS.includes(pack)){
                             PACKS.push(pack);
