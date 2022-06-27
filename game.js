@@ -775,15 +775,8 @@ G.rateLimit = function (client, cb) {
     });
 };
 
-function useless(input){
-    return input;
-}
 
 G.chat = function (client, msg) {
-
-
-   
-
 
     if (!msg.text || typeof msg.text != 'string')
         return this.warn("Bad message.");
@@ -829,7 +822,7 @@ const getpacks =  (path) => {
 
 function chatFunctions(text, cb) {
     if (text == '/packs') {
-        var notif = "all packs:\n";
+        var notif = "all packs: ";
         var packs = getpacks('sets');
         for (var i = 0; i < packs.length; i++) {
             if (!packs[i].includes('black')){
@@ -846,7 +839,7 @@ function chatFunctions(text, cb) {
         // });
 
 
-        notif += "<strong>packs in play:</strong>";
+        notif += "packs in play: ";
         for (let i = 0; i < PACKS.length; i++) {
             if (!/black/i.test(PACKS[i]))
                 notif += ('"' + PACKS[i].replace('.txt', '') + '" ');
@@ -859,17 +852,16 @@ function chatFunctions(text, cb) {
         var splitMsg = text.split(' ');
         if (splitMsg[0] == '/add') {
             var notif = ''
-            fs.readdir('sets', function(err, sets) {
-                 if (err)
-                     return cb(err);
+            var packs = getpacks('sets')
                 sets.forEach(function(pack) {
                     if (pack.includes(splitMsg[1])) {
-                         PACKS.push(pack);
-                         notif += '"'+pack+'" ';
-                     }
+                        if (!PACKS.includes(pack)){
+                            PACKS.push(pack);
+                            notif += '"'+pack+'" ';
+                        }else{notif += '"' + pack + '" is already added!'}
+                    }
 
                 });
-            });
             notif += "will be added next round!"
             return notif
         }
@@ -878,7 +870,8 @@ function chatFunctions(text, cb) {
             for (var i = 0; i < PACKS.length; i++) {
                 if (PACKS[i].includes(splitMsg[1])) {
                     PACKS.splice (i, 1)
-                    notif += ('"'+PACKS[i]+'" ');
+                    if PACKS[i]
+                    notif += ('"'+(PACKS[i].replace('black', '')).replace('.txt', '') +'" ');
                 }              
             }
             notif += "will be removed next round."
