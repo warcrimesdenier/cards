@@ -857,8 +857,8 @@ function chatFunctions(text, cb) {
                     if (pack.includes(splitMsg[1])) {
                         if (!PACKS.includes(pack)){
                             PACKS.push(pack);
-                            notif += '"'+pack+'" ';
-                        }else{notif += '"' + pack + '" is already added!'}
+                            notif += '"'+ pack.replace('.txt','') +'" ';
+                        }else{notif += '"' + pack.replace('.txt','') + '" is already added!'}
                     }
 
                 });
@@ -870,11 +870,11 @@ function chatFunctions(text, cb) {
             for (var i = 0; i < PACKS.length; i++) {
                 if (PACKS[i].includes(splitMsg[1])) {
                     PACKS.splice (i, 1)
-                    if PACKS[i]
-                    notif += ('"'+(PACKS[i].replace('black', '')).replace('.txt', '') +'" ');
+                    notif += ('"'+PACKS[i].replace('.txt', '') +'" ');
                 }              
             }
-            notif += "will be removed next round."
+            if (notif != "") {notif += "will be removed next round."}
+                else{notif = splitMsg[1] + " isn't in the list!"}
             return notif;
         }
         else if (splitMsg[0] == '/cheat') {
