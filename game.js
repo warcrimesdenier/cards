@@ -839,12 +839,12 @@ function chatFunctions(text, cb) {
         // });
 
 
-        notif += "packs in play: ";
+        notif += "                                                       packs in play: ";
         for (let i = 0; i < PACKS.length; i++) {
             if (!/black/i.test(PACKS[i]))
                 notif += ('"' + PACKS[i].replace('.txt', '') + '" ');
         };
-        notif += "type /add <pack> or /remove <pack> to change the packs in play for the next round!"
+        notif += "                                                   type /add <pack> or /remove <pack> to change the packs in play for the next round!"
         return notif
     }
 
